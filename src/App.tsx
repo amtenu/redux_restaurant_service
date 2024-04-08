@@ -4,6 +4,7 @@ import "./App.css";
 import { RootState } from "./store";
 import ReservationCard from "./components/ReservationCard";
 import { addReservation } from "./features/reservationSlice";
+import CustomerCard from "./components/CustomerCard";
 
 function App() {
   const [reservationNameInput, setReservationNameInput] = useState("");
@@ -12,6 +13,8 @@ function App() {
     (state: RootState) => state.reservationSlice.value
   );
 
+  const customers = useSelector((state: RootState) => state.customer.value);
+
   const dispatch = useDispatch();
 
   const handleAddReservations = () => {
@@ -19,7 +22,7 @@ function App() {
       return;
     }
     dispatch(addReservation(reservationNameInput));
-    setReservationNameInput("")
+    setReservationNameInput("");
   };
   return (
     <div className="App">
@@ -29,8 +32,10 @@ function App() {
             <h5 className="reservation-header">Reservations</h5>
             <div className="reservation-cards-container">
               <div className="reservation-card-container">
-                {reservations.map((name,index) => {
-                  return <ReservationCard key={name} name={name} index={index} />;
+                {reservations.map((name, index) => {
+                  return (
+                    <ReservationCard key={name} name={name} index={index} />
+                  );
                 })}
               </div>
             </div>
@@ -44,16 +49,15 @@ function App() {
           </div>
         </div>
         <div className="customer-food-container">
-          <div className="customer-food-card-container">
-            <p>Solomon</p>
-            <div className="customer-foods-container">
-              <div className="customer-food"></div>
-              <div className="customer-food-input-container">
-                <input />
-                <button>Add</button>
-              </div>
-            </div>
-          </div>
+          {customers.map((customer) => {
+            return (
+              <CustomerCard
+                id={customer.id}
+                name={customer.name}
+                food={customer.food}
+              />
+            );
+          })}
         </div>
       </div>
     </div>
